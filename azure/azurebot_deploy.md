@@ -23,7 +23,8 @@ https://docs.microsoft.com/ja-jp/cli/azure/install-azure-cli-macos?view=azure-cl
 ```
 
 2. Azure App Service on Linux の作成  
-https://docs.microsoft.com/en-us/cli/azure/appservice/ase?view=azure-cli-latest#az-appservice-ase-create  
+https://docs.microsoft.com/en-us/cli/azure/appservice/ase?view=azure-cli-latest#az-appservice-ase-create
+
 | name | value |
 | --- | --- |
 | サブスクリプション | EX: *Azure サブスクリプション 1* |
@@ -43,8 +44,9 @@ https://docs.microsoft.com/en-us/cli/azure/appservice/ase?view=azure-cli-latest#
 
   $リソースグループを作成する
   az group create -g $rgroup --location japaneast
-```
-```
+  ```
+
+  ```
   <Deploy in Linux>
   Freeプランのlinux環境は１つのサブスクリプションに１つまでなので注意
 
@@ -54,6 +56,7 @@ https://docs.microsoft.com/en-us/cli/azure/appservice/ase?view=azure-cli-latest#
   $Azure App Service Web を作成する
   az webapp create --name $appname --resource-group $rgroup --plan $appname --runtime "JAVA|8-jre8"
   ```
+  
   ```
   <Deploy in Windows>
   Windows にデプロイする場合は、恐らくこのコマンドで可能。
@@ -68,7 +71,8 @@ https://docs.microsoft.com/en-us/cli/azure/appservice/ase?view=azure-cli-latest#
 ### プロジェクトの作成
 1. サンプルプロジェクトのクローン  
 https://docs.microsoft.com/ja-jp/azure/java/spring-framework/deploy-spring-boot-java-app-with-maven-plugin  
-gitに構成ずみのプロジェクトがある場合は、clone対象を適宜読み替える。  
+gitに構成ずみのプロジェクトがある場合は、clone対象を適宜読み替える。
+
 ```
   $ローカルにデプロイ作業用ディレクトリ作成  
   mkdir ~/CustomBotDeploy
@@ -82,18 +86,20 @@ gitに構成ずみのプロジェクトがある場合は、clone対象を適宜
 ```
 
 2. *application.properties* の設定の変更  
-`vi jbot-example/src/main/resources/application.properties`  
-~~~
+`vi jbot-example/src/main/resources/application.properties`
+
+```
 # Facebookと連携しないので以下に変更
 spring.profiles.active=slack
 # SlackBotのAPIトークンに変更
 slackBotToken=xoxb-xxxxxxxxxxxxxxxxxx
-~~~
+```
   *※xoxb-xxxxxxxxxxxxxxxxxx = Slackに作成したBotのAPIトークン*
 
 3. 依存関係を追加
 Javaバージョンが9以上だとエラ〜が出るので、pomの <dependencies> にjaxbの依存関係を追加する  
-`vi jbot-example/pom.xml`    
+`vi jbot-example/pom.xml`
+
 ```
   <dependency>
       <groupId>javax.xml.bind</groupId>
@@ -120,13 +126,13 @@ mvn clean package
 1. プラグインの変更
 azureにデプロイできる様に jbot-example/pom.xml ファイルのプラグインを追加する  
 `spring-boot-maven-plugin` の下に追加
-~~~
+```
   <plugin>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-webapp-maven-plugin</artifactId>
         <version>1.9.0</version>
   </plugin>
-~~~
+```
 
 2. 設定を構成する(jbot-example/pom.xml の更新)  
 構成コマンドを実行する  
@@ -203,10 +209,10 @@ jbot-example/pom.xml の `<configuration>` セクションの設定を確認す�
 ```
 
 7. Javaコマンドからデプロイ先のアプリを実行する（Windows にデプロイした場合のみ）
-  1. Azureコンソールにブラウザでログインする  
-  2. ホーム > リソースグループ > アプリ名 と選んでAppServiceの左メニューを表示する
-  3. 左メニュー「開発ツール」の「コンソール」を選択する
-  4. コンソール内で `java -jar app.jar` コマンドを実行する
+    1. Azureコンソールにブラウザでログインする  
+    2. ホーム > リソースグループ > アプリ名 と選んでAppServiceの左メニューを表示する
+    3. 左メニュー「開発ツール」の「コンソール」を選択する
+    4. コンソール内で `java -jar app.jar` コマンドを実行する
 
 完了です🎉  
 デプロイに成功しても、Slackでオンラインになるまで**10分**くらいかかります。  
